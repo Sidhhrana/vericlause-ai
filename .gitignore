@@ -1,0 +1,31 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Cloudflare Wrangler
+.wrangler/
+dist/
+
+# Node
+node_modules/
+package-lock.json
+
+# Temporary screenshot, crop and patch files
+screenshot_*.png
+crop_*.png
+patch_*.png
+star_*.png
+slice_*.png
+test_*.*
+dot_*.*
+tr_*.*
+wide_*.*
+med_strip.png
+clean_*.*
+monopo_*.*
+hero-clean-preview.png
+hero-bg-silver-inpaint.jpg
+hero-bg-smooth.jpg
+background-orb.png
+Image.jpeg
+file upload .png

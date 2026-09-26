@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+  <title>VeriClause AI — Intelligent Document Forensics & Risk Engine</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Floating Transparent Navigation (Monopo Saigon Architecture) -->
+  <header class="app-header">
+    <!-- Brand Identity: VeriClause AI -->
+    <div class="brand-wrapper" onclick="showView('landing')" title="VeriClause AI — Return to Home">
+      <span class="brand-title">VeriClause AI</span>
+      <span class="brand-dot"></span>
+    </div>
+
+    <!-- Minimalist Underline-Free Editorial Navigation Links -->
+    <nav class="nav-links">
+      <button class="nav-link" id="nav-landing-btn" onclick="showView('landing')">HOME</button>
+      <button class="nav-link" id="nav-features-btn" onclick="showView('features')">FEATURES</button>
+      <button class="nav-link" id="nav-workspace-btn" onclick="showView('workspace')">AUDIT STUDIO</button>
+    </nav>
+
+    <!-- Header Actions: Clean Ghost Pill Buttons -->
+    <div class="header-actions">
+      <!-- Workspace Document Selector (Visible in Audit Studio) -->
+      <div class="header-doc-picker" id="headerDocPicker" style="display: none;">
+        <select id="docSelector" class="doc-dropdown" onchange="switchDocument(this.value)">
+          <option value="msa">CloudScale_MSA_2026.pdf (Master Agreement)</option>
+          <option value="invoice">Invoice_INV-892.pdf (Cross-Reconciliation)</option>
+          <option value="lease">BostonHQ_Lease_2026.pdf (Commercial Lease)</option>
+        </select>
+      </div>
+
+      <button class="btn-ghost-pill" onclick="openUploadModal()">
+        + Add File
+      </button>
+
+      <button class="btn-ghost-pill ws-only" id="btnExport" onclick="exportSummary()" style="display: none;" title="Export Audit Dossier">
+        Export Dossier
+      </button>
+
+      <button class="btn-ghost-pill ws-only" id="btnReAudit" onclick="triggerRunAnalysis(event)" style="display: none;" title="Re-Audit Document">
+        Re-Audit
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       PAGE 1: LANDING PAGE (#page-landing)
+       Pure High-Res Molten Iridescent Background (media_1790430666482.png)
+       ======================================================================== -->
+  <section id="page-landing" class="page-view active">
+    
+    <!-- Hero Content Overlay -->
+    <div class="hero-container">
+      
+      <div class="hero-tag">
+        AI LAWYER 
+      </div>
+
+      <h1 class="hero-headline">VeriClause AI</h1>
+
+      <p class="hero-subtext">Meticulous Review &bull; Guaranteed Precision</p>
+
+      <!-- Action Navigation CTAs -->
+      <div class="hero-cta-group">
+        <button class="btn-pill-solid" onclick="openUploadModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+          Add File (Prototype)
+        </button>
+
+        <button class="btn-pill-outline" onclick="showView('features')">
+          Explore Features &rarr;
+        </button>
+
+        <button class="btn-pill-outline" onclick="showView('workspace')">
+          Launch Audit Studio &rarr;
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       PAGE 2: DEDICATED FEATURES PAGE (#page-features)
+       Vertical Scrolling Architectural Experience
+       ======================================================================== -->
+  <section id="page-features" class="page-view" style="display: none;">
+    
+    <div class="features-page-header">
+      <div class="hero-tag">
+        CORE CAPABILITIES &bull; ARCHITECTURAL OVERVIEW
+      </div>
+      <h2 class="features-main-title">Autonomous Risk Forensics</h2>
+      <p class="features-main-subtext">Deep multi-pass verification pipeline engineered to neutralize predatory liabilities before signature.</p>
+
+      <!-- Sticky Quick-Jump Navigation -->
+      <nav class="features-subnav" id="featuresSubnav">
+        <button class="subnav-pill active" onclick="scrollToFeature('feat-1')">01 Predatory Clauses</button>
+        <button class="subnav-pill" onclick="scrollToFeature('feat-2')">02 Visual Traceability</button>
+        <button class="subnav-pill" onclick="scrollToFeature('feat-3')">03 Invoice Audit</button>
+        <button class="subnav-pill" onclick="scrollToFeature('feat-4')">04 Counter-Clauses</button>
+        <button class="subnav-pill" onclick="scrollToFeature('feat-5')">05 Dual-Lens View</button>
+        <button class="subnav-pill" onclick="scrollToFeature('feat-6')">06 Calendar Notice</button>
+      </nav>
+    </div>
+
+    <!-- Vertical Stack of Monumental Capabilities -->
+    <div class="features-vertical-container">
+      
+      <!-- Feature 01: Predatory Clause Forensics -->
+      <article class="feat-card-vertical" id="feat-1">
+        <div class="feat-info-col">
+          <div class="feat-pill-row">
+            <span class="feat-tag">01 &bull; ANOMALY DETECTION</span>
+            <span class="badge-risk badge-danger">High Exposure</span>
+          </div>
+          <h3 class="feat-heading">Predatory Clause Forensics</h3>
+          <p class="feat-text">
+            Uncovers buried contractual obligations, auto-renewal traps, unilateral price indexation, and compounding penalty rates before signature.
+          </p>
+          <ul class="feat-checklist">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Automated 24-Month Extension Trap Detection</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Uncapped Compound Penalty Auditor (18.5%/mo)</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Deterministic Citation to Agreement Sections</span>
+            </li>
+          </ul>
+          <button class="btn-card-action" onclick="quickLoadDoc('msa')">
+            Audit CloudScale MSA &rarr;
+          </button>
+        </div>
+
+        <div class="feat-demo-col">
+          <div class="feat-sandbox">
+            <div class="sandbox-header">
+              <span>FLAGGED EXTRACT // CLOUDSCALE MSA §8.3</span>
+              <span style="color: #ff8a80;">CRITICAL RISK</span>
+            </div>
+            <div class="sandbox-clause-box">
+              <span class="sandbox-flag">Mandatory 24-Mo Renewal</span>
+              <p>Agreement shall automatically renew for additional consecutive <strong>twenty-four (24) month terms</strong> unless cancelled in writing at least 45 days prior.</p>
+            </div>
+            <div class="sandbox-stat-row">
+              <div class="stat-item">
+                <div class="stat-num">$185,000</div>
+                <div class="stat-lbl">Uncapped Lock-In</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">45 Days</div>
+                <div class="stat-lbl">Notice Window</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Feature 02: Bidirectional Visual Traceability -->
+      <article class="feat-card-vertical" id="feat-2">
+        <div class="feat-info-col">
+          <div class="feat-pill-row">
+            <span class="feat-tag">02 &bull; SPATIAL MAPPING</span>
+            <span class="badge-risk badge-safe">Synchronized Canvas</span>
+          </div>
+          <h3 class="feat-heading">Bidirectional Visual Traceability</h3>
+          <p class="feat-text">
+            Every identified risk maps to real bounding boxes in the document sheet. Clicking any finding smoothly navigates and highlights the exact clause in its original context.
+          </p>
+          <ul class="feat-checklist">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Instant Jump to Bounding Boxes on Document Canvas</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Zero-Latency Spring Scroll Navigation</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Persistent Active Highlight Bounding Rings</span>
+            </li>
+          </ul>
+          <button class="btn-card-action" onclick="quickLoadDoc('msa')">
+            Experience Spatial Canvas &rarr;
+          </button>
+        </div>
+
+        <div class="feat-demo-col">
+          <div class="feat-sandbox">
+            <div class="sandbox-header">
+              <span>SPATIAL TRACE VIEW</span>
+              <span style="color: #86efac;">100% LOCATED</span>
+            </div>
+            <div class="trace-demo-box">
+              <div class="trace-doc-preview">
+                <div class="trace-doc-line"></div>
+                <div class="trace-doc-line short"></div>
+                <div class="trace-bbox-preview box-danger">
+                  <span>§4.2 Late Penalties (18.5%)</span>
+                </div>
+                <div class="trace-doc-line"></div>
+              </div>
+              <div class="trace-arrow">&larr; Synced Jump &rarr;</div>
+              <div class="trace-card-preview">
+                <div style="font-weight: 600; color: #fff; font-size: 11px;">Financial Anomaly</div>
+                <div style="font-size: 10px; color: var(--metallic-silver);">Page 14 &bull; Section 4.2</div>
+              </div>
+            </div>
+            <div class="sandbox-stat-row">
+              <div class="stat-item">
+                <div class="stat-num">Zero Lag</div>
+                <div class="stat-lbl">Smooth Spring Scroll</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">14 Clauses</div>
+                <div class="stat-lbl">Indexed Context</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Feature 03: Cross-Document Invoice Reconciliation -->
+      <article class="feat-card-vertical" id="feat-3">
+        <div class="feat-info-col">
+          <div class="feat-pill-row">
+            <span class="feat-tag">03 &bull; BILLING FORENSICS</span>
+            <span class="badge-risk badge-danger">Rate Mismatch</span>
+          </div>
+          <h3 class="feat-heading">Cross-Document Invoice Reconciliation</h3>
+          <p class="feat-text">
+            Automatically audits incoming vendor invoices against master agreement fee schedules, stopping silent rate creep, unapproved surcharges, and billing leaks.
+          </p>
+          <ul class="feat-checklist">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Ingests Invoices & Cross-Checks Master Agreements</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Flags $125/hr Unapproved Rate vs $95/hr Contract Cap</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Real-Time Cumulative Overcharge Calculation ($16,875)</span>
+            </li>
+          </ul>
+          <button class="btn-card-action" onclick="quickLoadDoc('invoice')">
+            Reconcile Invoice INV-892 &rarr;
+          </button>
+        </div>
+
+        <div class="feat-demo-col">
+          <div class="feat-sandbox">
+            <div class="sandbox-header">
+              <span>INVOICE #INV-892 VS MSA RATE TABLE</span>
+              <span style="color: #ff8a80;">+$30/HR OVERCHARGE</span>
+            </div>
+            <div class="recon-compare-grid">
+              <div class="recon-pill-cell agreed">
+                <div class="cell-label">MSA Agreed Rate (§4.1)</div>
+                <div class="cell-val">$95.00 / hr</div>
+              </div>
+              <div class="recon-pill-cell billed">
+                <div class="cell-label">Invoice Billed Rate</div>
+                <div class="cell-val">$125.00 / hr</div>
+              </div>
+            </div>
+            <div class="sandbox-stat-row">
+              <div class="stat-item">
+                <div class="stat-num">$16,875.00</div>
+                <div class="stat-lbl">Cumulative Overcharge</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">562.5 Hrs</div>
+                <div class="stat-lbl">Billed Window</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Feature 04: Instant Counter-Clause Remediation -->
+      <article class="feat-card-vertical" id="feat-4">
+        <div class="feat-info-col">
+          <div class="feat-pill-row">
+            <span class="feat-tag">04 &bull; REMEDIATION DRAFTER</span>
+            <span class="badge-risk badge-safe">1-Click Redline</span>
+          </div>
+          <h3 class="feat-heading">Instant Counter-Clause Remediation</h3>
+          <p class="feat-text">
+            Auto-drafts enterprise replacement language and polite, firm negotiation emails to vendor procurement leads to strike one-sided indemnity and penalty terms.
+          </p>
+          <ul class="feat-checklist">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Pre-Balanced Legal Amendments for Immediate Redlines</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Pre-Drafted Diplomatic Vendor Procurement Email</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>1-Click Clipboard Export with Confirmation HUD</span>
+            </li>
+          </ul>
+          <button class="btn-card-action" onclick="openCounterModal('liability')">
+            Inspect Counter-Clause &rarr;
+          </button>
+        </div>
+
+        <div class="feat-demo-col">
+          <div class="feat-sandbox">
+            <div class="sandbox-header">
+              <span>SUGGESTED AMENDMENT LANGUAGE</span>
+              <span style="color: #86efac;">READY TO COPY</span>
+            </div>
+            <div class="code-preview-box">
+              "Each party's aggregate liability under Section 11 shall be mutually capped at the total amounts paid by Customer in the preceding twelve (12) months..."
+            </div>
+            <div class="sandbox-stat-row">
+              <div class="stat-item">
+                <div class="stat-num">Mutual Cap</div>
+                <div class="stat-lbl">12-Mo Fees Floor</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">Pre-Drafted</div>
+                <div class="stat-lbl">Vendor Email Ready</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Feature 05: Dual-Lens Plain English & Legal View -->
+      <article class="feat-card-vertical" id="feat-5">
+        <div class="feat-info-col">
+          <div class="feat-pill-row">
+            <span class="feat-tag">05 &bull; EXECUTIVE TRIAGE</span>
+            <span class="badge-risk badge-warning">Dual Perspective</span>
+          </div>
+          <h3 class="feat-heading">Dual-Lens View (Executive & Legal)</h3>
+          <p class="feat-text">
+            Toggle seamlessly between plain-English commercial summaries for procurement leadership and strict statutory citations (UCC, Restatement) for legal counsel.
+          </p>
+          <ul class="feat-checklist">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Plain English Triage for Founders, CFOs & Operations</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Statutory Doctrine Citations for General Counsel</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Instant Synchronized Switcher with Zero Reload</span>
+            </li>
+          </ul>
+          <button class="btn-card-action" onclick="quickLoadDoc('lease')">
+            Test Commercial Lease &rarr;
+          </button>
+        </div>
+
+        <div class="feat-demo-col">
+          <div class="feat-sandbox">
+            <div class="sandbox-header">
+              <span>VIEW PERSPECTIVE SWITCHER</span>
+              <span style="color: #fde047;">BILINGUAL TRIAGE</span>
+            </div>
+            <div class="mini-toggle-demo">
+              <button class="mini-btn active" onclick="this.classList.add('active'); this.nextElementSibling.classList.remove('active'); document.getElementById('demoPreviewText').textContent='Plain English: You are locked into a 24-month contract renewal unless you serve written notice by August 16, 2026.'">Plain English</button>
+              <button class="mini-btn" onclick="this.classList.add('active'); this.previousElementSibling.classList.remove('active'); document.getElementById('demoPreviewText').textContent='Legal Doctrine: Strict evergreen extension clause triggering irrevocable term under NY UCC §2-309 and Restatement (Second) of Contracts §211.'">Legal Doctrine</button>
+            </div>
+            <div class="code-preview-box" id="demoPreviewText" style="font-size: 11px;">
+              "Plain English: You are locked into a 24-month contract renewal unless you serve written notice by August 16, 2026."
+            </div>
+            <div class="sandbox-stat-row">
+              <div class="stat-item">
+                <div class="stat-num">Executive</div>
+                <div class="stat-lbl">High-Level Triage</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">Counsel</div>
+                <div class="stat-lbl">Statutory Citations</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Feature 06: Mandatory Notice Windows & Calendar Sync -->
+      <article class="feat-card-vertical" id="feat-6">
+        <div class="feat-info-col">
+          <div class="feat-pill-row">
+            <span class="feat-tag">06 &bull; CALENDAR PROTECTION</span>
+            <span class="badge-risk badge-danger">Deadline Alert</span>
+          </div>
+          <h3 class="feat-heading">Notice Window & Calendar Sync</h3>
+          <p class="feat-text">
+            Identifies critical opt-out and termination notice deadlines, exporting standard iCalendar (.ics) reminders directly to Apple Calendar, Outlook, and Google.
+          </p>
+          <ul class="feat-checklist">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Calculates Hard Cancellation Deadlines Automatically</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>1-Click RFC 5545 Standard .ics Export for Apple / Outlook / Google</span>
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Prevents Inadvertent Multi-Year Extension Lock-in</span>
+            </li>
+          </ul>
+          <button class="btn-card-action" onclick="addToCalendar('renewal')">
+            Download .ics Reminder &rarr;
+          </button>
+        </div>
+
+        <div class="feat-demo-col">
+          <div class="feat-sandbox">
+            <div class="sandbox-header">
+              <span>CALENDAR SYNC PIPELINE</span>
+              <span style="color: #ff8a80;">AUG 16, 2026</span>
+            </div>
+            <div class="calendar-pill-demo">
+              <div class="cal-date-badge">
+                <span class="cal-month">AUG</span>
+                <span class="cal-day">16</span>
+              </div>
+              <div class="cal-info">
+                <div class="cal-event-title">CloudScale Notice Deadline</div>
+                <div class="cal-event-meta">Serve notice to avoid mandatory 24-mo renewal</div>
+              </div>
+              <button class="btn-xs btn-subtle" onclick="addToCalendar('renewal')">
+                Download .ics
+              </button>
+            </div>
+            <div class="sandbox-stat-row">
+              <div class="stat-item">
+                <div class="stat-num">Zero Misses</div>
+                <div class="stat-lbl">Apple / Outlook / Google</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">45 Days</div>
+                <div class="stat-lbl">Lead Time Protected</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Monumental Closing Call-to-Action -->
+    <div class="features-closing-hero">
+      <div class="hero-tag">
+        INSTITUTIONAL RISK FORENSICS
+      </div>
+      <h3 class="closing-title">Meticulous Review, Guaranteed Precision</h3>
+      <p class="closing-subtext">Run automated forensics against your master service agreements, commercial leases, and vendor invoices today.</p>
+      <div class="hero-cta-group">
+        <button class="btn-pill-solid" onclick="openUploadModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+          Add File (Prototype)
+        </button>
+        <button class="btn-pill-outline" onclick="showView('workspace')">
+          Launch Audit Studio &rarr;
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================
+       PAGE 3: AUDIT STUDIO SPLIT-SCREEN WORKSPACE (#page-workspace)
+       ======================================================================== -->
+  <section id="page-workspace" class="page-view" style="display: none;">
+
+    <!-- Metrics Ribbon: Grouped GlassEffectContainer -->
+    <section class="metrics-bar" id="metricsBar">
+      <div class="metric-pill">
+        <div>
+          <div class="metric-label">Audit Score</div>
+          <div class="metric-val" id="metricScore">54 <span style="font-size: 11px; color: var(--text-tertiary); font-weight: 400;">/ 100</span></div>
+        </div>
+        <span class="badge-risk badge-danger" id="metricRiskBadge">Critical Risk</span>
+      </div>
+
+      <div class="metric-pill">
+        <div>
+          <div class="metric-label">Uncapped Exposure</div>
+          <div class="metric-val" id="metricExposure">$185,000</div>
+        </div>
+        <span class="badge-risk badge-warning">Liability Gap</span>
+      </div>
+
+      <div class="metric-pill">
+        <div>
+          <div class="metric-label">Action Window</div>
+          <div class="metric-val" id="metricDeadline">Aug 16, 2026</div>
+        </div>
+        <span class="badge-risk badge-danger">45-Day Notice</span>
+      </div>
+
+      <div class="metric-pill">
+        <div>
+          <div class="metric-label">Omissions</div>
+          <div class="metric-val" id="metricMissing">2 Missing</div>
+        </div>
+        <span class="badge-risk badge-warning">IP Indemnity</span>
+      </div>
+    </section>
+
+    <!-- Split Screen Workspace -->
+    <main class="app-workspace">
+      
+      <!-- Left: Document Viewer with Traceable Bounding Boxes -->
+      <section class="document-pane">
+        <div class="pane-toolbar">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--metallic-silver);">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            <span style="font-weight: 500; color: var(--text-primary);" id="docTitle">CloudScale_MSA_2026.pdf</span>
+            <span style="color: var(--apple-separator);">•</span>
+            <span id="docPageIndicator" style="color: var(--text-secondary);">Page 14 of 38</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 11px; color: var(--text-tertiary);">100% Zoom</span>
+          </div>
+        </div>
+
+        <div class="doc-viewport" id="docViewport">
+          <!-- Rendered dynamically by app.js with Apple Pages layout -->
+          <article class="doc-paper" id="docPaper">
+            <!-- Document Content Injected Here -->
+          </article>
+        </div>
+      </section>
+
+      <!-- Right: Intelligence & Traceability Feed -->
+      <section class="audit-pane">
+        <div class="audit-control-bar">
+          <div class="control-row">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em;" id="findingsCountLabel">
+              Findings (4)
+            </span>
+
+            <!-- Apple Segmented Control: Plain English vs Legal View -->
+            <div class="toggle-group" role="tablist">
+              <button class="toggle-opt active" id="btnModePlain" onclick="setMode('plain')" role="tab" aria-selected="true">Plain English</button>
+              <button class="toggle-opt" id="btnModeLegal" onclick="setMode('legal')" role="tab" aria-selected="false">Legal View</button>
+            </div>
+          </div>
+
+          <!-- Filter Capsule Tabs -->
+          <div class="filter-tabs" role="tablist">
+            <button class="tab-btn active" data-filter="all" onclick="setFilter('all')">All</button>
+            <button class="tab-btn" data-filter="deadline" onclick="setFilter('deadline')">Deadlines</button>
+            <button class="tab-btn" data-filter="financial" onclick="setFilter('financial')">Financial</button>
+            <button class="tab-btn" data-filter="missing" onclick="setFilter('missing')">Missing Clauses</button>
+            <button class="tab-btn" data-filter="invoice" onclick="setFilter('invoice')">Invoice Mismatch</button>
+          </div>
+        </div>
+
+        <!-- Feed Container -->
+        <div class="findings-container" id="findingsContainer">
+          <!-- Dynamic Cards Injected Here -->
+        </div>
+      </section>
+
+    </main>
+  </section>
+
+  <!-- ========================================================================
+       ADD FILE UI MODAL (#uploadModal)
+       Explicit Prototype Preview + Live Examples
+       ======================================================================== -->
+  <div class="modal-overlay" id="uploadModal" onclick="if(event.target===this) closeModal('uploadModal')">
+    <div class="upload-modal-dialog">
+      <button class="modal-close" onclick="closeModal('uploadModal')" aria-label="Close dialog">&times;</button>
+
+      <div class="upload-slot-illustration">
+        <div class="upload-sheet-card">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="upload-header-content">
+        <h3 class="upload-title">Add Document</h3>
+        <p class="upload-subtitle">Autonomous risk triage & forensic contract analysis</p>
+      </div>
+
+      <!-- PROTOTYPE DISCLAIMER BANNER -->
+      <div class="prototype-banner">
+        <div class="prototype-badge">PROTOTYPE PREVIEW &bull; ACTIVE BUILD</div>
+        <p class="prototype-notice">
+          <strong>Notice:</strong> The live document ingestion & OCR pipeline is currently in active development for v1.0.
+          Please test our <strong>verified live contract examples</strong> below to experience full risk forensics, invoice cross-reconciliation, and counter-clause drafting.
+        </p>
+      </div>
+
+      <!-- SECTION: LIVE WORKING EXAMPLES -->
+      <div class="modal-section-title">
+        <span>VERIFIED LIVE DEMONSTRATION EXAMPLES</span>
+        <span class="live-pill">Interactive</span>
+      </div>
+
+      <div class="sample-chips-vertical">
+        
+        <div class="live-sample-card" onclick="quickLoadDoc('msa')">
+          <div class="live-sample-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="live-sample-body">
+            <div class="live-sample-title">CloudScale_MSA_2026.pdf</div>
+            <div class="live-sample-meta">14 Sections &bull; Critical 24-Mo Renewal Trap &bull; 18.5% Late Fee</div>
+          </div>
+          <span class="badge-risk badge-danger">Launch &rarr;</span>
+        </div>
+
+        <div class="live-sample-card" onclick="quickLoadDoc('invoice')">
+          <div class="live-sample-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          </div>
+          <div class="live-sample-body">
+            <div class="live-sample-title">Invoice_INV-892.pdf</div>
+            <div class="live-sample-meta">Billing Reconciliation &bull; Unauthorized $125/hr Rate Mismatch</div>
+          </div>
+          <span class="badge-risk badge-danger">Launch &rarr;</span>
+        </div>
+
+        <div class="live-sample-card" onclick="quickLoadDoc('lease')">
+          <div class="live-sample-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </div>
+          <div class="live-sample-body">
+            <div class="live-sample-title">BostonHQ_Lease_2026.pdf</div>
+            <div class="live-sample-meta">Commercial Lease &bull; 8.5% Uncapped Escalation &bull; HVAC Shift</div>
+          </div>
+          <span class="badge-risk badge-warning">Launch &rarr;</span>
+        </div>
+
+      </div>
+
+      <!-- SECTION: IN DEVELOPMENT (CUSTOM UPLOAD) -->
+      <div class="modal-section-title" style="margin-top: 18px;">
+        <span>CUSTOM UPLOAD (IN PROGRESS &bull; COMING IN V1.0)</span>
+      </div>
+
+      <div class="upload-dropzone" onclick="document.getElementById('hiddenFileInput').click()">
+        <input type="file" id="hiddenFileInput" style="display: none;" onchange="handleFileSelected(event)" accept=".pdf,.docx,.txt">
+        <div class="dropzone-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="dropzone-text">
+          <span class="dropzone-strong">Drag & drop file</span> or <span class="dropzone-browse">Browse</span>
+        </div>
+        <div class="dropzone-meta">File parser in staging (Loads prototype simulation)</div>
+      </div>
+
+      <div class="upload-paste-container">
+        <label class="paste-label" for="pasteSnippetInput">Or test raw clause snippet:</label>
+        <textarea id="pasteSnippetInput" class="paste-textarea" placeholder="Paste custom clause text to test extraction..."></textarea>
+      </div>
+
+      <div class="upload-modal-footer">
+        <button class="btn btn-subtle" onclick="closeModal('uploadModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="processCustomSnippet()">Test Custom Snippet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Sheet: Counter-Clause Negotiation Draft (Apple HIG Sheet) -->
+  <div class="modal-overlay" id="counterModal" onclick="if(event.target===this) closeModal('counterModal')">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Counter-Clause Remediation</div>
+        <button class="modal-close" onclick="closeModal('counterModal')" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+        Recommended replacement amendment to balance risk and remove predatory obligations:
+      </div>
+
+      <div class="code-box" id="modalClauseText"></div>
+
+      <div style="font-size: 12px; color: var(--text-secondary); margin-top: 14px; margin-bottom: 6px;">
+        Pre-drafted Negotiation Email to Vendor:
+      </div>
+
+      <div class="code-box" style="font-size: 11px; max-height: 120px; overflow-y: auto;" id="modalEmailText"></div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+        <button class="btn btn-subtle" onclick="closeModal('counterModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="copyModalContent()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Copy Amendment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Apple HUD Notification -->
+  <div class="apple-toast" id="appleToast">
+    <span class="toast-icon">✓</span>
+    <span id="appleToastText">Notification</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

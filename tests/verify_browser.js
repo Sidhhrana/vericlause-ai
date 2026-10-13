@@ -193,8 +193,56 @@ async function run() {
     console.log('Custom findings count:', customFindingsCount);
     if (customFindingsCount === 0) throw new Error('Custom snippet failed to flag trap');
 
+    // Test 13: Radial Score Visualizer & Spectrum Bar Verification
+    console.log('13. Testing Radial Score Visualizer and Spectrum Bar...');
+    await evalCode("switchDocument('msa')");
+    const expectedScore = await evalCode("DB.msa.score");
+    const radialScoreNum = await evalCode("document.getElementById('metricScoreNum').textContent");
+    const circleOffset = await evalCode("parseFloat(document.getElementById('metricScoreCircle').style.strokeDashoffset)");
+    const spectrumWidth = await evalCode("document.getElementById('metricSpectrumFill').style.width");
+    console.log('Score num:', radialScoreNum, '| Expected:', expectedScore, '| Circle strokeDashoffset:', circleOffset, '| Spectrum:', spectrumWidth);
+    if (radialScoreNum !== String(expectedScore) || isNaN(circleOffset) || spectrumWidth !== expectedScore + '%') {
+      throw new Error('Radial score visualizer or spectrum bar values mismatch');
+    }
+
+    // Test 14: Bilingual Switcher Verification (Plain English <-> Legal Doctrine)
+    console.log('14. Testing Bilingual Switcher (Plain English vs Legal Doctrine)...');
+    await evalCode("setMode('legal')");
+    const isLegalMode = await evalCode("state.mode === 'legal'");
+    const legalBtnActive = await evalCode("document.getElementById('btnModeLegal').classList.contains('active')");
+    const plainBtnInactive = await evalCode("!document.getElementById('btnModePlain').classList.contains('active')");
+    console.log('Legal mode active:', isLegalMode, '| Legal button active:', legalBtnActive, '| Plain button inactive:', plainBtnInactive);
+    if (!isLegalMode || !legalBtnActive || !plainBtnInactive) {
+      throw new Error('Bilingual mode switch to legal failed');
+    }
+    await evalCode("setMode('plain')");
+    const isPlainMode = await evalCode("state.mode === 'plain'");
+    if (!isPlainMode) throw new Error('Switch back to plain mode failed');
+
+    // Test 15: Mobile Integrated View Tab Switching
+    console.log('15. Testing Mobile Integrated Workspace Switching...');
+    await evalCode("setMobilePane('findings')");
+    const hasFindingsPaneClass = await evalCode("document.getElementById('page-workspace').classList.contains('mobile-pane-findings')");
+    const findingsBtnActive = await evalCode("document.getElementById('btnMobileFindings').classList.contains('active')");
+    console.log('Mobile pane findings class:', hasFindingsPaneClass, '| Findings tab active:', findingsBtnActive);
+    if (!hasFindingsPaneClass || !findingsBtnActive) {
+      throw new Error('Mobile pane switch to findings failed');
+    }
+    await evalCode("setMobilePane('doc')");
+    const hasDocPaneClass = await evalCode("document.getElementById('page-workspace').classList.contains('mobile-pane-doc')");
+    if (!hasDocPaneClass) throw new Error('Mobile pane switch back to doc failed');
+
+    // Test 16: Page End Fix Audit Feed Footer Verification
+    console.log('16. Testing Page End Fix (Audit Stream Footer)...');
+    const hasFeedFooter = await evalCode("!!document.querySelector('.audit-feed-footer')");
+    const docViewportPadding = await evalCode("window.getComputedStyle(document.getElementById('docViewport')).paddingBottom");
+    console.log('Feed completion footer present:', hasFeedFooter, '| Doc viewport padding-bottom:', docViewportPadding);
+    if (!hasFeedFooter) {
+      throw new Error('Audit feed completion footer missing');
+    }
+
     console.log('\n======================================================');
-    console.log('🎉 ALL 12 END-TO-END BROWSER AUTOMATION TESTS PASSED! 🎉');
+    console.log('🎉 ALL 16 END-TO-END BROWSER AUTOMATION TESTS PASSED! 🎉');
     console.log('======================================================\n');
 
     ws.close();

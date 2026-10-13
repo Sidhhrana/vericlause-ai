@@ -1042,14 +1042,48 @@ function renderDocument() {
     doc.exposure = doc.baseExposure;
   }
 
-  // Update Metrics Ribbon
+  // Update Metrics Ribbon & Radial Visualizer Gauge
   const mScore = document.getElementById("metricScore");
+  const mScoreNum = document.getElementById("metricScoreNum");
+  const mScoreCircle = document.getElementById("metricScoreCircle");
+  const mSpectrumFill = document.getElementById("metricSpectrumFill");
   const mBadge = document.getElementById("metricRiskBadge");
   const mExposure = document.getElementById("metricExposure");
   const mDeadline = document.getElementById("metricDeadline");
   const mMissing = document.getElementById("metricMissing");
+  const mobileCount = document.getElementById("mobileFindingsBadge");
 
   if (mScore) mScore.innerHTML = `${doc.score} <span style="font-size: 11px; color: var(--metallic-silver); font-weight: 400;">/ 100</span>`;
+  if (mScoreNum) mScoreNum.textContent = doc.score;
+
+  // Animate SVG circular progress gauge (Circumference of r=28 is 2 * PI * 28 = 175.93)
+  const circumference = 175.93;
+  const strokeOffset = circumference - (circumference * (doc.score / 100));
+  if (mScoreCircle) {
+    mScoreCircle.style.strokeDashoffset = strokeOffset;
+    if (doc.score >= 80) {
+      mScoreCircle.style.stroke = "#10b981";
+      mScoreCircle.style.filter = "drop-shadow(0 0 6px rgba(16, 185, 129, 0.45))";
+    } else if (doc.score >= 60) {
+      mScoreCircle.style.stroke = "#f59e0b";
+      mScoreCircle.style.filter = "drop-shadow(0 0 6px rgba(245, 158, 11, 0.45))";
+    } else {
+      mScoreCircle.style.stroke = "#ef4444";
+      mScoreCircle.style.filter = "drop-shadow(0 0 6px rgba(239, 68, 68, 0.45))";
+    }
+  }
+
+  if (mSpectrumFill) {
+    mSpectrumFill.style.width = `${Math.max(6, doc.score)}%`;
+    if (doc.score >= 80) {
+      mSpectrumFill.style.background = "linear-gradient(90deg, #10b981, #34d399)";
+    } else if (doc.score >= 60) {
+      mSpectrumFill.style.background = "linear-gradient(90deg, #f59e0b, #fbbf24)";
+    } else {
+      mSpectrumFill.style.background = "linear-gradient(90deg, #ef4444, #f87171)";
+    }
+  }
+
   if (mBadge) {
     mBadge.textContent = doc.riskLevel;
     mBadge.className = `badge-risk ${doc.score < 50 ? 'badge-danger' : doc.score < 75 ? 'badge-warning' : 'badge-safe'}`;
@@ -1059,6 +1093,9 @@ function renderDocument() {
   if (mMissing) {
     const remainingMissing = (doc.findings || []).filter(f => f.category === 'missing' && !state.appliedRemediations.has(f.id)).length;
     mMissing.textContent = remainingMissing > 0 ? `${remainingMissing} Missing` : "Protected";
+  }
+  if (mobileCount) {
+    mobileCount.textContent = (doc.findings || []).length;
   }
 }
 
@@ -1155,6 +1192,17 @@ function renderFindings() {
     `;
   });
 
+  // End of audit feed footer (Page End Fix)
+  html += `
+    <div class="audit-feed-footer">
+      <div class="feed-footer-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Forensic Audit Stream Grounded • Privacy Guaranteed</span>
+      </div>
+      <div class="feed-footer-sub">All predatory terms, rate cards & omissions analyzed locally</div>
+    </div>
+  `;
+
   container.innerHTML = html;
 }
 
@@ -1174,6 +1222,56 @@ function selectFinding(id) {
     document.querySelectorAll(".bounding-box").forEach(b => b.classList.remove("box-highlighted"));
     targetBox.scrollIntoView({ behavior: "smooth", block: "center" });
     targetBox.classList.add("box-highlighted");
+  }
+
+  // On mobile screens, automatically show document canvas to reveal highlighted box
+  if (window.innerWidth <= 960 && state.mobileActivePane === "findings") {
+    setMobilePane("doc");
+    setTimeout(() => {
+      if (targetBox) targetBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 150);
+  }
+}
+
+// Mobile Responsive Split Switcher
+function setMobilePane(pane) {
+  state.mobileActivePane = pane;
+  const ws = document.getElementById("page-workspace");
+  const docPane = document.querySelector(".document-pane");
+  const auditPane = document.querySelector(".audit-pane");
+  const btnDoc = document.getElementById("btnMobileDoc");
+  const btnFindings = document.getElementById("btnMobileFindings");
+
+  if (ws) {
+    if (pane === "doc") {
+      ws.classList.add("mobile-pane-doc");
+      ws.classList.remove("mobile-pane-findings");
+    } else {
+      ws.classList.add("mobile-pane-findings");
+      ws.classList.remove("mobile-pane-doc");
+    }
+  }
+
+  if (btnDoc) {
+    if (pane === "doc") btnDoc.classList.add("active");
+    else btnDoc.classList.remove("active");
+  }
+  if (btnFindings) {
+    if (pane === "findings") btnFindings.classList.add("active");
+    else btnFindings.classList.remove("active");
+  }
+
+  if (window.innerWidth <= 960) {
+    if (pane === "doc") {
+      if (docPane) docPane.style.display = "flex";
+      if (auditPane) auditPane.style.display = "none";
+    } else {
+      if (docPane) docPane.style.display = "none";
+      if (auditPane) auditPane.style.display = "flex";
+    }
+  } else {
+    if (docPane) docPane.style.display = "";
+    if (auditPane) auditPane.style.display = "";
   }
 }
 

@@ -492,40 +492,84 @@
        ======================================================================== -->
   <section id="page-workspace" class="page-view" style="display: none;">
 
-    <!-- Metrics Ribbon: Grouped GlassEffectContainer -->
+    <!-- Metrics Ribbon: Apple Liquid Glass Dashboard & Radial Score Visualizer -->
     <section class="metrics-bar" id="metricsBar">
-      <div class="metric-pill">
-        <div>
-          <div class="metric-label">Audit Score</div>
-          <div class="metric-val" id="metricScore">54 <span style="font-size: 11px; color: var(--text-tertiary); font-weight: 400;">/ 100</span></div>
+      <!-- 1. Hero Score Radial Visualizer Glass Card -->
+      <div class="metric-glass-card metric-score-card">
+        <div class="score-radial-visualizer">
+          <svg class="score-gauge-svg" width="68" height="68" viewBox="0 0 68 68">
+            <circle class="score-track" cx="34" cy="34" r="28" />
+            <circle class="score-progress" id="metricScoreCircle" cx="34" cy="34" r="28" />
+          </svg>
+          <div class="score-center-text">
+            <span class="score-big-num" id="metricScoreNum">54</span>
+            <span class="score-total-denom">/100</span>
+          </div>
         </div>
-        <span class="badge-risk badge-danger" id="metricRiskBadge">Critical Risk</span>
+
+        <div class="score-info-col">
+          <div class="score-header-row">
+            <span class="metric-kicker">Contract Health</span>
+            <span class="badge-risk badge-danger" id="metricRiskBadge">Critical Risk</span>
+          </div>
+          <div class="score-spectrum-wrapper">
+            <div class="score-spectrum-track">
+              <div class="score-spectrum-fill" id="metricSpectrumFill" style="width: 54%;"></div>
+            </div>
+            <div class="score-spectrum-labels">
+              <span>Risk: 0</span>
+              <span>Parity: 75</span>
+              <span>100</span>
+            </div>
+          </div>
+          <!-- Backward-compatible metricScore element -->
+          <div id="metricScore" style="display: none;">54 <span style="font-size: 11px; color: var(--text-tertiary); font-weight: 400;">/ 100</span></div>
+        </div>
       </div>
 
-      <div class="metric-pill">
-        <div>
-          <div class="metric-label">Uncapped Exposure</div>
-          <div class="metric-val" id="metricExposure">$185,000</div>
+      <!-- 2. Exposure Glass Card -->
+      <div class="metric-glass-card">
+        <div class="metric-card-top">
+          <span class="metric-kicker">Uncapped Exposure</span>
+          <span class="badge-risk badge-warning" id="metricExposureBadge">Liability Gap</span>
         </div>
-        <span class="badge-risk badge-warning">Liability Gap</span>
+        <div class="metric-hero-val" id="metricExposure">$185,000+</div>
+        <div class="metric-subtext">Direct financial & pricing liability</div>
       </div>
 
-      <div class="metric-pill">
-        <div>
-          <div class="metric-label">Action Window</div>
-          <div class="metric-val" id="metricDeadline">Aug 16, 2026</div>
+      <!-- 3. Notice Window Glass Card -->
+      <div class="metric-glass-card">
+        <div class="metric-card-top">
+          <span class="metric-kicker">Notice Window</span>
+          <span class="badge-risk badge-danger" id="metricDeadlineBadge">45-Day Notice</span>
         </div>
-        <span class="badge-risk badge-danger">45-Day Notice</span>
+        <div class="metric-hero-val" id="metricDeadline">Aug 16, 2026</div>
+        <div class="metric-subtext">Mandatory cancellation cutoff</div>
       </div>
 
-      <div class="metric-pill">
-        <div>
-          <div class="metric-label">Omissions</div>
-          <div class="metric-val" id="metricMissing">2 Missing</div>
+      <!-- 4. Defensive Omissions Glass Card -->
+      <div class="metric-glass-card">
+        <div class="metric-card-top">
+          <span class="metric-kicker">Omission Shields</span>
+          <span class="badge-risk badge-warning" id="metricMissingBadge">IP Indemnity</span>
         </div>
-        <span class="badge-risk badge-warning">IP Indemnity</span>
+        <div class="metric-hero-val" id="metricMissing">2 Missing</div>
+        <div class="metric-subtext">Vendor defense & SLA omissions</div>
       </div>
     </section>
+
+    <!-- Mobile Integrated View Switcher (Visible on mobile/tablets only) -->
+    <div class="mobile-workspace-tabs" id="mobileWorkspaceTabs" role="tablist">
+      <button class="mobile-tab-btn active" id="btnMobileDoc" onclick="setMobilePane('doc')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>Document Canvas</span>
+      </button>
+      <button class="mobile-tab-btn" id="btnMobileFindings" onclick="setMobilePane('findings')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Risk Findings</span>
+        <span class="mobile-count-pill" id="mobileFindingsBadge">4</span>
+      </button>
+    </div>
 
     <!-- Split Screen Workspace -->
     <main class="app-workspace">
@@ -558,16 +602,26 @@
       <!-- Right: Intelligence & Traceability Feed -->
       <section class="audit-pane">
         <div class="audit-control-bar">
+          <!-- Bigger Legal/Plain View Button (Prominent Bilingual Switcher) -->
+          <div class="bilingual-switch-container">
+            <div class="toggle-group bilingual-toggle-large" role="tablist">
+              <button class="toggle-opt active" id="btnModePlain" onclick="setMode('plain')" role="tab" aria-selected="true">
+                <span class="toggle-icon">💡</span>
+                <span class="toggle-primary">Plain English</span>
+                <span class="toggle-sub">Founder / CFO</span>
+              </button>
+              <button class="toggle-opt" id="btnModeLegal" onclick="setMode('legal')" role="tab" aria-selected="false">
+                <span class="toggle-icon">⚖️</span>
+                <span class="toggle-primary">Legal Doctrine</span>
+                <span class="toggle-sub">Counsel / UCC</span>
+              </button>
+            </div>
+          </div>
+
           <div class="control-row">
             <span style="font-size: 12px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em;" id="findingsCountLabel">
               Findings (4)
             </span>
-
-            <!-- Apple Segmented Control: Plain English vs Legal View -->
-            <div class="toggle-group" role="tablist">
-              <button class="toggle-opt active" id="btnModePlain" onclick="setMode('plain')" role="tab" aria-selected="true">Plain English</button>
-              <button class="toggle-opt" id="btnModeLegal" onclick="setMode('legal')" role="tab" aria-selected="false">Legal View</button>
-            </div>
           </div>
 
           <!-- Filter Capsule Tabs -->

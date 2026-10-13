@@ -13,6 +13,31 @@ const DB = {
     exposure: "$185,000+",
     deadline: "Aug 16, 2026",
     missingCount: "2 Missing",
+    rawText: `MASTER SERVICES & CLOUD INFRASTRUCTURE AGREEMENT
+Effective Date: November 15, 2025   Doc Ref: CS-MSA-2026-V4
+This Master Services Agreement is entered into by and between CloudScale Infrastructure Technologies LLC (Vendor) and Apex Global Enterprise Corp. (Client).
+
+SECTION 1: SCOPE OF SERVICES
+1.1 SOW Execution: Vendor shall provide services described in mutually executed Statements of Work referencing this Agreement.
+1.2 Change Orders: Any modification to the scope, timing, or deliverables shall be documented in a written Change Order signed by authorized procurement representatives.
+
+SECTION 2: SERVICE LEVEL AGREEMENT & UPTIME COMMITMENT
+2.1 Availability: Vendor covenants that the core compute and database clusters shall maintain monthly Service Level Availability of 99.95%.
+
+SECTION 4: FEES, INVOICING & PAYMENT TERMS
+4.1 Standard Net-30 Invoicing: Client shall remit payment for undisputed invoices within thirty (30) calendar days. Senior technical advisory rates are fixed at $95.00/hr.
+4.2 Late Penalties: In the event any invoice balance remains unpaid past the thirty (30) day window, such delinquent balance shall automatically accrue interest compounding at the rate of 18.5% per month, payable immediately upon demand without requirement of prior cure notice or grace period.
+
+SECTION 8: TERM, RENEWAL & TERMINATION
+8.1 Initial Term: Commencing November 15, 2025 for a period of twelve (12) consecutive months.
+8.2 Termination for Material Breach: Either party may terminate upon thirty (30) days written notice if the other party materially breaches.
+8.3 Automatic Extension: Unless Client tenders formal written notice of non-renewal via certified registered courier strictly no less than ninety (90) calendar days prior to expiration of the Initial Term (Strict Notice Cutoff: August 16, 2026), this Agreement shall irrevocably renew for an additional twenty-four (24) months subject to a mandatory 15% rate escalation across all compute line items.
+
+SECTION 12: LIMITATION OF REMEDIES & LIABILITY
+12.1 Liability Thresholds: Vendor cumulative aggregate liability shall be strictly capped at the total fees received in the immediately preceding one (1) month ($15,000 max). Conversely, Client agrees that its indemnification exposure and liability shall remain wholly uncapped, without waiver or exclusion of incidental or consequential damages.
+
+SECTION 13: GOVERNING LAW & JURISDICTION
+13.1 Choice of Law: This Agreement shall be construed and enforced in accordance with the substantive laws of the State of Delaware.`,
     docHtml: `
       <div style="font-family: var(--font-mono); font-size: 11px; color: var(--metallic-silver); margin-bottom: 24px; border-bottom: 1px solid var(--steel-gray); padding-bottom: 8px; display: flex; justify-content: space-between;">
         <span>CONFIDENTIAL // MASTER SERVICES AGREEMENT</span>
@@ -219,6 +244,22 @@ const DB = {
     exposure: "$6,000 Overcharge",
     deadline: "Payment Due: 14 Days",
     missingCount: "2 Overbills",
+    rawText: `INVOICE #INV-2026-892
+Vendor: CloudScale Infrastructure Technologies LLC (500 Howard Street, San Francisco, CA)
+Billed To: Apex Global Enterprise Corp. (PO Reference: PO-89421)
+Billing Period: October 01 - October 31, 2026   Due: Net 30 Days
+
+Line Item 01: Dedicated Compute Instances (c6i.8xlarge): 720 Hours @ $10.00/hr = $7,200.00
+Line Item 02: Senior Cloud Architect Consultation: 160.00 Hours billed at $125.00/Hour = $20,000.00
+(Reference: Master Services Agreement CS-MSA-2026 §4.1 specifies approved rate cap of $95.00/Hour)
+Line Item 03: Dedicated Transit Gateway & VPC Peering: Monthly Fee = $1,400.00
+Line Item 04: Managed PostgreSQL Storage & IOPS: 1,200 GB = $2,600.00
+Line Item 05: Infrastructure Expedited Handling Surcharge: Flat Fee $1,200.00
+(Note: SOW #2 §3 prohibits auxiliary administrative fees without prior written Change Order)
+
+Gross Billed Total: $21,200.00
+Total Overcharge Identified: -$6,000.00
+Legitimate Payable: $15,200.00`,
     docHtml: `
       <div style="font-family: var(--font-mono); font-size: 11px; color: var(--metallic-silver); margin-bottom: 24px; border-bottom: 1px solid var(--steel-gray); padding-bottom: 8px; display: flex; justify-content: space-between;">
         <span>VENDOR BILLING RECONCILIATION // INVOICE #INV-2026-892</span>
@@ -369,6 +410,25 @@ const DB = {
     exposure: "$32,000/yr",
     deadline: "Notice: 120 Days",
     missingCount: "1 Omission",
+    rawText: `COMMERCIAL OFFICE BUILDING LEASE AGREEMENT
+Landlord: Boston Tower Properties Trust (100 Federal Street, Boston, MA)
+Tenant: Apex Global Technologies   Lease ID: BOS-HQ-2026
+
+SECTION 1: DEMISED PREMISES & RENTABLE AREA
+1.1 Premises: Entire fourteenth (14th) floor at 100 Federal Street, Boston, Massachusetts, consisting of 18,500 rentable square feet (RSF).
+
+SECTION 2: LEASE TERM & POSSESSION
+2.1 Duration: Sixty (60) calendar months, commencing February 01, 2026 and expiring January 31, 2031.
+
+SECTION 3: BASE RENT & PAYMENT SCHEDULE
+3.1 Minimum Annual Rent: Monthly installments of $95,583.33 ($62.00 per RSF per annum).
+
+SECTION 4: OPERATING EXPENSES & ESCALATION
+4.1 Proportionate Share: Tenant shall pay Tenant's Proportionate Share (4.12%) of Building Operating Expenses.
+4.3 Base Rent Escalation & Capital Pass-Through: Base Rent shall automatically compound annually by eight and five-tenths percent (8.5%) on each anniversary without ceiling. Operating Expenses shall include central HVAC chiller replacements, structural retrofits, and roof replacements amortized at Landlord's sole discretion without cap or percentage ceiling, payable by Tenant without independent audit rights.
+
+SECTION 7: SURRENDER & RESTORATION
+7.1 Condition at Surrender: Surrender in broom-clean condition, ordinary wear and tear excepted.`,
     docHtml: `
       <div style="font-family: var(--font-mono); font-size: 11px; color: var(--metallic-silver); margin-bottom: 24px; border-bottom: 1px solid var(--steel-gray); padding-bottom: 8px; display: flex; justify-content: space-between;">
         <span>COMMERCIAL OFFICE LEASE AGREEMENT // 100 FEDERAL STREET, BOSTON</span>
@@ -470,7 +530,9 @@ const state = {
   currentDoc: "msa",
   activeFindingId: "renewal",
   mode: "plain", // "plain" or "legal"
-  filter: "all"
+  filter: "all",
+  appliedRemediations: new Set(),
+  activeModalFindingId: null
 };
 
 // Initialize Application
@@ -581,82 +643,284 @@ function scrollToFeature(featureId) {
   }
 }
 
-// Handle Direct File Upload from Dribbble Modal
-function handleFileSelected(event) {
-  const file = event.target.files && event.target.files[0];
+// ============================================================================
+// PRODUCTION FILE INGESTION PIPELINE (PDF, DOCX, TXT)
+// ============================================================================
+
+async function ingestFile(file) {
   if (!file) return;
   closeModal("uploadModal");
-  
-  const fileName = file.name;
-  showAppleToast(`Ingesting ${fileName}...`, "⏳");
-  
-  setTimeout(() => {
-    DB[fileName] = {
-      title: fileName,
-      pageInfo: "Page 1 of 1",
-      score: 58,
-      riskLevel: "Critical Risk",
-      exposure: "$95,000",
-      deadline: "Within 30 Days",
-      missingCount: "1 Omission",
-      docHtml: `
-        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--metallic-silver); margin-bottom: 24px; border-bottom: 1px solid var(--steel-gray); padding-bottom: 8px;">
-          <span>INSTANT INGESTION // \${fileName.toUpperCase()}</span>
-        </div>
-        <h2>SECTION 1: EXTRACTED AGREEMENT TEXT</h2>
-        <p style="margin-bottom: 14px; font-size: 13px; color: #334155; line-height: 1.7;">
-          Document "\${fileName}" successfully ingested into VeriClause AI Engine. Multi-pass structural analysis detected standard commercial boilerplate with flagged liability traps.
-        </p>
-        <div class="bounding-box box-danger" id="bbox-up1" onclick="selectFinding('up1')">
-          <span class="badge-risk badge-danger">Liability Anomaly</span>
-          <p style="color: #0f172a; font-size: 13.5px; line-height: 1.65; margin-top: 6px;">
-            <strong>Uncapped Indemnification Provision:</strong> Customer agrees to defend, indemnify, and hold harmless Vendor from any and all third-party claims, liabilities, or losses without limitation or aggregate monetary cap.
-          </p>
-        </div>
-      `,
-      findings: [
-        {
-          id: "up1",
-          category: "financial",
-          severity: "danger",
-          badge: "Uncapped Indemnity",
-          section: "Indemnity Section",
-          page: "Page 1",
-          title: "Asymmetric Uncapped Liability Shift",
-          plainDesc: "The vendor requires you to absorb 100% of all third-party legal claims with no liability ceiling.",
-          legalDesc: "Unilateral indemnification lacking mutual hold-harmless reciprocity and lacking aggregate liability limitation under UCC § 2-719.",
-          impact: "Uncapped Financial Risk Exposure",
-          actionText: "Status: Flagged",
-          counterClause: "Each party's aggregate indemnification liability hereunder shall be mutually capped at the total amounts paid by Customer in the preceding twelve (12) months.",
-          emailDraft: "Hi Team,\n\nWe have reviewed the indemnification section of the agreement and require a mutual liability cap tied to 12 months fees.\n\nBest regards."
-        }
-      ]
-    };
 
+  const fileName = file.name;
+  const ext = fileName.split(".").pop().toLowerCase();
+
+  showScanOverlay(`Ingesting ${fileName}`, "Extracting text streams & tokenizing clauses...");
+
+  try {
+    let extractedText = "";
+
+    updateScanProgress(20, "Extracting binary file content...");
+
+    if (ext === "pdf") {
+      updateScanProgress(35, "Parsing PDF vector streams via PDF.js...");
+      const arrayBuffer = await file.arrayBuffer();
+      extractedText = await extractTextFromPdf(arrayBuffer);
+    } else if (ext === "docx") {
+      updateScanProgress(35, "Extracting Word DOCX paragraphs via Mammoth...");
+      const arrayBuffer = await file.arrayBuffer();
+      extractedText = await extractTextFromDocx(arrayBuffer);
+    } else {
+      updateScanProgress(35, "Reading plain text & markdown streams...");
+      extractedText = await file.text();
+    }
+
+    if (!extractedText || !extractedText.trim()) {
+      throw new Error("Unable to extract text from file. Please ensure the document contains readable text.");
+    }
+
+    updateScanProgress(60, "Running multi-pass heuristic & statutory forensics...");
+    await new Promise(r => setTimeout(r, 300));
+
+    updateScanProgress(80, "Auditing missing protective shields & liability caps...");
+    const analyzedDoc = ForensicEngine.analyzeDocument(extractedText, fileName);
+
+    updateScanProgress(95, "Calculating exposure & spatial visual grounding...");
+    await new Promise(r => setTimeout(r, 200));
+
+    // Store in global DB
+    DB[fileName] = analyzedDoc;
+
+    // Update Dropdown in Header
     const sel = document.getElementById("docSelector");
     if (sel) {
-      const opt = document.createElement("option");
-      opt.value = fileName;
-      opt.textContent = `\${fileName} (Custom Upload)`;
-      sel.appendChild(opt);
+      let optExists = false;
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === fileName) optExists = true;
+      }
+      if (!optExists) {
+        const opt = document.createElement("option");
+        opt.value = fileName;
+        opt.textContent = `${fileName} (Live Extracted)`;
+        sel.appendChild(opt);
+      }
       sel.value = fileName;
     }
 
+    updateScanProgress(100, "Forensic audit complete!");
+    await new Promise(r => setTimeout(r, 150));
+
+    hideScanOverlay();
     switchDocument(fileName);
     showView("workspace");
-    showAppleToast(`Prototype Preview: Upload pipeline in works. Loaded preview for ${fileName}`, "ℹ");
-  }, 500);
+
+    showAppleToast(`Forensic Audit Complete: ${analyzedDoc.findings.length} findings indexed`, "✓");
+
+  } catch (err) {
+    console.error("Ingestion failed:", err);
+    hideScanOverlay();
+    alert(`Document Ingestion Notice: ${err.message || err}`);
+  }
+}
+
+async function extractTextFromPdf(arrayBuffer) {
+  if (typeof pdfjsLib === "undefined") {
+    throw new Error("PDF parser is initializing. Please try again.");
+  }
+  if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdf.worker.min.js";
+  }
+
+  let pdfDoc;
+  try {
+    const loadingTask = pdfjsLib.getDocument({
+      data: arrayBuffer,
+      useWorkerFetch: false,
+      isEvalSupported: false,
+      useSystemFonts: true
+    });
+    pdfDoc = await loadingTask.promise;
+  } catch (workerErr) {
+    console.warn("Primary PDF.js worker load threw, falling back to main thread:", workerErr);
+    try {
+      if (pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "";
+      }
+    } catch (_) {}
+    const fallbackTask = pdfjsLib.getDocument({
+      data: arrayBuffer,
+      disableWorker: true,
+      useWorkerFetch: false
+    });
+    pdfDoc = await fallbackTask.promise;
+  }
+  const numPages = pdfDoc.numPages;
+  let fullText = "";
+
+  for (let i = 1; i <= numPages; i++) {
+    const page = await pdfDoc.getPage(i);
+    const textContent = await page.getTextContent();
+    let lastY = null;
+    let pageText = "";
+
+    for (const item of textContent.items) {
+      if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
+        pageText += "\n";
+      } else if (pageText && !pageText.endsWith(" ") && !pageText.endsWith("\n")) {
+        pageText += " ";
+      }
+      pageText += item.str;
+      lastY = item.transform[5];
+    }
+    fullText += `\n--- SECTION / PAGE ${i} ---\n` + pageText + "\n";
+  }
+  return fullText;
+}
+
+async function extractTextFromDocx(arrayBuffer) {
+  if (typeof mammoth === "undefined") {
+    throw new Error("Word DOCX parser is initializing.");
+  }
+  const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+  return result.value;
+}
+
+function handleDropFile(event) {
+  event.preventDefault();
+  const dt = event.dataTransfer;
+  if (dt && dt.files && dt.files.length > 0) {
+    ingestFile(dt.files[0]);
+  }
+}
+
+function handleFileSelected(event) {
+  const file = event.target.files && event.target.files[0];
+  if (file) {
+    ingestFile(file);
+  }
+}
+
+function showScanOverlay(title, subtitle) {
+  const overlay = document.getElementById("scanOverlay");
+  const titleEl = document.getElementById("scanTitle");
+  const subEl = document.getElementById("scanSubtitle");
+  const bar = document.getElementById("scanBarFill");
+  const text = document.getElementById("scanStatusText");
+
+  if (titleEl) titleEl.textContent = title;
+  if (subEl) subEl.textContent = subtitle;
+  if (bar) bar.style.width = "10%";
+  if (text) text.textContent = "Initializing forensic pipeline...";
+  if (overlay) overlay.classList.add("visible");
+}
+
+function updateScanProgress(percent, message) {
+  const bar = document.getElementById("scanBarFill");
+  const text = document.getElementById("scanStatusText");
+  if (bar) bar.style.width = `${percent}%`;
+  if (text && message) text.textContent = message;
+}
+
+function hideScanOverlay() {
+  const overlay = document.getElementById("scanOverlay");
+  if (overlay) overlay.classList.remove("visible");
+}
+
+function switchModalTab(tabId, btn) {
+  document.querySelectorAll(".modal-nav-tab").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".modal-tab-pane").forEach(p => p.classList.remove("active"));
+
+  if (btn) btn.classList.add("active");
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add("active");
+}
+
+function loadSnippetPreset(type) {
+  const input = document.getElementById("pasteSnippetInput");
+  if (!input) return;
+
+  const presets = {
+    renewal: "8.3 Automatic Extension: Unless Client tenders formal written notice of non-renewal via certified registered courier strictly no less than ninety (90) calendar days prior to expiration, this Agreement shall irrevocably renew for an additional twenty-four (24) months subject to a mandatory 15% rate escalation across all service items.",
+    latefee: "4.2 Delinquent Balances: In the event any invoice remains unpaid past thirty (30) days, such delinquent balance shall accrue interest compounding at the rate of 18.5% per month, payable immediately upon demand without requirement of prior cure notice.",
+    liability: "12.1 Liability Thresholds: Vendor's cumulative aggregate liability shall be strictly capped at the total fees received in the preceding one (1) month ($15,000 max). Client agrees that its indemnification exposure and liability shall remain wholly uncapped without waiver of incidental or consequential damages.",
+    lease: "ARTICLE 4. BASE RENT ESCALATION: Tenant shall pay Base Rent increasing annually by eight and five-tenths percent (8.5%) compounding per annum. Capital replacements including HVAC central chillers shall be charged to Tenant under Operating Expenses."
+  };
+
+  input.value = presets[type] || "";
+  showAppleToast(`Loaded ${type} test clause`, "ℹ");
+}
+
+function processCustomSnippet() {
+  const snippet = document.getElementById("pasteSnippetInput").value.trim();
+  if (!snippet) {
+    alert("Please paste text or a clause snippet to audit.");
+    return;
+  }
+
+  closeModal("uploadModal");
+  showAppleToast("Auditing custom snippet...", "⏳");
+
+  const customDoc = ForensicEngine.analyzeDocument(snippet, "Custom_Clause_Audit.txt");
+  DB.custom = customDoc;
+
+  const sel = document.getElementById("docSelector");
+  if (sel) {
+    let opt = Array.from(sel.options).find(o => o.value === "custom");
+    if (!opt) {
+      opt = document.createElement("option");
+      opt.value = "custom";
+      opt.textContent = "Custom_Clause_Audit.txt";
+      sel.appendChild(opt);
+    }
+    sel.value = "custom";
+  }
+
+  switchDocument("custom");
+  showView("workspace");
+  showAppleToast(`Audit Complete: ${customDoc.findings.length} findings identified`, "✓");
+}
+
+function runCrossReconciliation() {
+  const contractKey = document.getElementById("reconContractSelect")?.value || "msa";
+  const invoiceKey = document.getElementById("reconInvoiceSelect")?.value || "invoice";
+
+  const contractDoc = (contractKey === "current" ? DB[state.currentDoc] : DB[contractKey]) || DB.msa;
+  const invoiceDoc = DB[invoiceKey] || DB.invoice;
+
+  closeModal("uploadModal");
+  showAppleToast("Reconciling Invoice against Contract Fee Schedule...", "⏳");
+
+  const invoiceText = invoiceDoc.rawText || "";
+  const contractText = contractDoc.rawText || "";
+
+  const reconDoc = ForensicEngine.createReconciliationDoc(
+    invoiceText,
+    contractText,
+    invoiceDoc.title || "Invoice_INV-892.pdf",
+    contractDoc.title || "CloudScale_MSA_2026.pdf"
+  );
+
+  DB["reconciliation"] = reconDoc;
+
+  // Update header dropdown
+  const sel = document.getElementById("docSelector");
+  if (sel) {
+    let opt = Array.from(sel.options).find(o => o.value === "reconciliation");
+    if (!opt) {
+      opt = document.createElement("option");
+      opt.value = "reconciliation";
+      opt.textContent = `Reconciliation: ${reconDoc.title}`;
+      sel.appendChild(opt);
+    }
+    sel.value = "reconciliation";
+  }
+
+  switchDocument("reconciliation");
+  showView("workspace");
+  showAppleToast(`Reconciliation complete: ${reconDoc.exposure} flagged`, "✓");
 }
 
 function scrollToFeatures() {
-  // If in workspace, switch to home first
-  if (state.currentView !== "home") {
-    showView("home");
-  }
-  setTimeout(() => {
-    const el = document.getElementById("features-section");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 100);
+  showView("features");
 }
 
 // Switch Document in Split-Screen Workspace
@@ -700,6 +964,10 @@ function renderDocument() {
   const doc = DB[state.currentDoc];
   if (!doc) return;
 
+  if (doc.baseScore === undefined) doc.baseScore = doc.score;
+  if (doc.baseExposure === undefined) doc.baseExposure = doc.exposure;
+  if (doc.baseRiskLevel === undefined) doc.baseRiskLevel = doc.riskLevel;
+
   const docTitle = document.getElementById("docTitle");
   const docPageIndicator = document.getElementById("docPageIndicator");
   const docPaper = document.getElementById("docPaper");
@@ -707,6 +975,72 @@ function renderDocument() {
   if (docTitle) docTitle.textContent = doc.title;
   if (docPageIndicator) docPageIndicator.textContent = doc.pageInfo;
   if (docPaper) docPaper.innerHTML = doc.docHtml;
+
+  if (!state.appliedRemediations) {
+    state.appliedRemediations = new Set();
+  }
+
+  // Restore and render in-place applied redlines
+  if (doc.findings) {
+    doc.findings.forEach(f => {
+      if (state.appliedRemediations.has(f.id)) {
+        const box = document.getElementById("bbox-" + f.id);
+        if (box) {
+          box.classList.add("box-resolved");
+          const tag = box.querySelector(".box-tag");
+          if (tag) {
+            tag.className = "box-tag badge-resolved";
+            tag.textContent = "✓ Remediated & Balanced";
+          }
+
+          if (box.classList.contains("box-missing")) {
+            box.style.background = "#f0fdf4";
+            box.style.borderColor = "#22c55e";
+            const pEl = box.querySelector("p");
+            if (pEl && f.counterClause) {
+              pEl.innerHTML = `
+                <div style="margin-bottom: 6px; padding: 8px 12px; background: rgba(34, 197, 94, 0.12); border-left: 3px solid #22c55e; border-radius: 4px; color: #15803d; font-size: 13px; line-height: 1.6;">
+                  <strong>✓ Protective Shield Injected:</strong> ${f.counterClause}
+                </div>
+              `;
+            }
+          } else {
+            const pEl = box.querySelector("p") || box.querySelector(".clause-text");
+            if (pEl && f.counterClause) {
+              const origContent = pEl.innerText || pEl.textContent;
+              pEl.innerHTML = `
+                <div style="margin-bottom: 6px; padding: 8px 12px; background: rgba(34, 197, 94, 0.12); border-left: 3px solid #22c55e; border-radius: 4px; color: #15803d; font-size: 13px; line-height: 1.6;">
+                  <strong>✓ Balanced Redline (Enacted):</strong> ${f.counterClause}
+                </div>
+                <div style="font-size: 11.5px; color: #94a3b8; text-decoration: line-through; opacity: 0.85; line-height: 1.5; padding: 2px 4px;">
+                  ${origContent.slice(0, 320)}
+                </div>
+              `;
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Calculate dynamic metrics & exposure
+  const totalFindings = (doc.findings || []).length;
+  const remediatedCount = (doc.findings || []).filter(f => state.appliedRemediations.has(f.id)).length;
+
+  if (remediatedCount > 0) {
+    const bonus = Math.round((98 - doc.baseScore) * (remediatedCount / (totalFindings || 1)));
+    doc.score = Math.min(98, doc.baseScore + bonus);
+    doc.riskLevel = doc.score >= 80 ? "Secured Parity" : doc.score >= 60 ? "Moderate Concern" : "Critical Risk";
+    if (remediatedCount === totalFindings) {
+      doc.exposure = "$0 (Fully Mitigated)";
+    } else {
+      doc.exposure = `${totalFindings - remediatedCount} Active Exposure${totalFindings - remediatedCount > 1 ? 's' : ''}`;
+    }
+  } else {
+    doc.score = doc.baseScore;
+    doc.riskLevel = doc.baseRiskLevel;
+    doc.exposure = doc.baseExposure;
+  }
 
   // Update Metrics Ribbon
   const mScore = document.getElementById("metricScore");
@@ -718,11 +1052,14 @@ function renderDocument() {
   if (mScore) mScore.innerHTML = `${doc.score} <span style="font-size: 11px; color: var(--metallic-silver); font-weight: 400;">/ 100</span>`;
   if (mBadge) {
     mBadge.textContent = doc.riskLevel;
-    mBadge.className = `badge-risk ${doc.score < 50 ? 'badge-danger' : doc.score < 70 ? 'badge-warning' : 'badge-safe'}`;
+    mBadge.className = `badge-risk ${doc.score < 50 ? 'badge-danger' : doc.score < 75 ? 'badge-warning' : 'badge-safe'}`;
   }
   if (mExposure) mExposure.textContent = doc.exposure;
   if (mDeadline) mDeadline.textContent = doc.deadline;
-  if (mMissing) mMissing.textContent = doc.missingCount;
+  if (mMissing) {
+    const remainingMissing = (doc.findings || []).filter(f => f.category === 'missing' && !state.appliedRemediations.has(f.id)).length;
+    mMissing.textContent = remainingMissing > 0 ? `${remainingMissing} Missing` : "Protected";
+  }
 }
 
 // Render Intelligence Cards on Right
@@ -730,6 +1067,10 @@ function renderFindings() {
   const doc = DB[state.currentDoc];
   const container = document.getElementById("findingsContainer");
   if (!doc || !container) return;
+
+  if (!state.appliedRemediations) {
+    state.appliedRemediations = new Set();
+  }
 
   const items = doc.findings.filter(f => {
     if (state.filter === "all") return true;
@@ -768,13 +1109,14 @@ function renderFindings() {
 
   items.forEach(f => {
     const isSelected = f.id === state.activeFindingId;
+    const isRemediated = state.appliedRemediations.has(f.id);
     const desc = state.mode === "plain" ? f.plainDesc : f.legalDesc;
 
     html += `
       <div class="finding-card ${isSelected ? 'selected' : ''}" id="card-${f.id}" onclick="selectFinding('${f.id}')">
         <div class="card-top">
-          <span class="badge-risk ${f.severity === 'danger' ? 'badge-danger' : 'badge-warning'}">
-            ${f.badge}
+          <span class="badge-risk ${isRemediated ? 'badge-safe' : f.severity === 'danger' ? 'badge-danger' : 'badge-warning'}">
+            ${isRemediated ? '✓ Remediated' : f.badge}
           </span>
           <span style="font-size: 10.5px; color: var(--metallic-silver); font-family: var(--font-mono);">
             ${f.section} &bull; ${f.page}
@@ -784,24 +1126,29 @@ function renderFindings() {
         <div class="card-title">${f.title}</div>
         <div class="card-desc">${desc}</div>
 
-        <div style="font-size: 11.5px; color: ${f.severity === 'danger' ? '#ff8a80' : '#ffd15c'}; font-weight: 500; margin-bottom: 8px;">
-          ${f.impact}
+        <div style="font-size: 11.5px; color: ${isRemediated ? '#86efac' : f.severity === 'danger' ? '#ff8a80' : '#ffd15c'}; font-weight: 500; margin-bottom: 8px;">
+          ${isRemediated ? '✓ Exposure Mitigated' : f.impact}
         </div>
 
         <div class="card-actions">
-          <button class="btn btn-subtle btn-xs" onclick="event.stopPropagation(); openCounterModal('${f.id}')" title="Generate Counter-Clause">
+          <button class="btn btn-subtle btn-xs" onclick="event.stopPropagation(); openCounterModal('${f.id}')" title="Inspect Counter-Clause & Email">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Counter-Clause
           </button>
+
+          <button class="btn ${isRemediated ? 'btn-subtle' : 'btn-primary'} btn-xs" onclick="event.stopPropagation(); toggleRemediation('${f.id}')" title="Apply Balanced Amendment">
+            ${isRemediated ? 'Undo Redline' : 'Apply Redline'}
+          </button>
+
           ${f.category === 'deadline' ? `
-            <button class="btn btn-subtle btn-xs" onclick="event.stopPropagation(); addToCalendar('${f.id}')" title="Add to Calendar">
+            <button class="btn btn-subtle btn-xs" onclick="event.stopPropagation(); addToCalendar('${f.id}')" title="Download .ics Calendar Reminder">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              Add to Calendar
+              .ics Sync
             </button>
           ` : ''}
+
           <button class="btn btn-subtle btn-xs" style="margin-left: auto; color: #0f172a;" onclick="event.stopPropagation(); selectFinding('${f.id}')">
-            Trace
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            Trace &rarr;
           </button>
         </div>
       </div>
@@ -815,19 +1162,48 @@ function renderFindings() {
 function selectFinding(id) {
   state.activeFindingId = id;
 
-  // Highlight finding card
   document.querySelectorAll(".finding-card").forEach(c => c.classList.remove("selected"));
   const card = document.getElementById("card-" + id);
   if (card) {
     card.classList.add("selected");
+    card.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  // Smooth scroll document to matching bounding box
   const targetBox = document.getElementById("bbox-" + id);
   if (targetBox) {
     document.querySelectorAll(".bounding-box").forEach(b => b.classList.remove("box-highlighted"));
     targetBox.scrollIntoView({ behavior: "smooth", block: "center" });
     targetBox.classList.add("box-highlighted");
+  }
+}
+
+// In-Place Redline Remediation Toggle
+function toggleRemediation(findingId) {
+  if (!state.appliedRemediations) {
+    state.appliedRemediations = new Set();
+  }
+
+  const doc = DB[state.currentDoc];
+  const finding = doc && doc.findings ? doc.findings.find(f => f.id === findingId) : null;
+  if (!finding) return;
+
+  if (state.appliedRemediations.has(findingId)) {
+    state.appliedRemediations.delete(findingId);
+    renderDocument();
+    renderFindings();
+    showAppleToast(`Redline reverted. Score: ${doc.score}/100`, "↩");
+  } else {
+    state.appliedRemediations.add(findingId);
+    renderDocument();
+    renderFindings();
+    showAppleToast(`Counter-clause applied! Health score upgraded to ${doc.score}/100`, "✓");
+  }
+}
+
+function applyModalRemediation() {
+  if (state.activeModalFindingId) {
+    toggleRemediation(state.activeModalFindingId);
+    closeModal("counterModal");
   }
 }
 
@@ -856,29 +1232,32 @@ function setFilter(filter) {
 
 // Modal Handlers
 function openCounterModal(findingId) {
+  state.activeModalFindingId = findingId;
   const doc = DB[state.currentDoc];
-  const finding = doc.findings.find(f => f.id === findingId);
+  const finding = doc && doc.findings ? doc.findings.find(f => f.id === findingId) : null;
   if (!finding) return;
+
+  const isRemediated = state.appliedRemediations && state.appliedRemediations.has(findingId);
 
   document.getElementById("modalTitle").textContent = `Counter-Clause: ${finding.title}`;
   document.getElementById("modalClauseText").textContent = finding.counterClause;
   document.getElementById("modalEmailText").textContent = finding.emailDraft;
 
+  const applyBtn = document.getElementById("btnModalApplyRedline");
+  if (applyBtn) {
+    if (isRemediated) {
+      applyBtn.textContent = "↩ Undo Redline";
+      applyBtn.className = "btn btn-subtle";
+    } else {
+      applyBtn.textContent = "✓ Apply to Document";
+      applyBtn.className = "btn btn-primary";
+    }
+  }
+
   const modal = document.getElementById("counterModal");
   if (modal) modal.classList.add("open");
 }
 
-function openUploadModal() {
-  const modal = document.getElementById("uploadModal");
-  if (modal) modal.classList.add("open");
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) modal.classList.remove("open");
-}
-
-// Copy Modal Content
 function copyModalContent() {
   const clause = document.getElementById("modalClauseText").textContent;
   const email = document.getElementById("modalEmailText").textContent;
@@ -891,122 +1270,93 @@ function copyModalContent() {
   });
 }
 
-// Calendar Reminder (.ics Download)
-function addToCalendar(findingId) {
-  const icsData = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//VeriClause AI//Deadline Reminder//EN",
-    "BEGIN:VEVENT",
-    "SUMMARY:URGENT: Notice Deadline for CloudScale Agreement Termination",
-    "DESCRIPTION:Serve written cancellation notice to avoid mandatory 24-month automatic renewal trap.",
-    "DTSTART:20260816T090000Z",
-    "DTEND:20260816T100000Z",
-    "STATUS:CONFIRMED",
-    "END:VEVENT",
-    "END:VCALENDAR"
-  ].join("\r\n");
+function updateReconDropdowns() {
+  const contractSel = document.getElementById("reconContractSelect");
+  const invoiceSel = document.getElementById("reconInvoiceSelect");
+  if (!contractSel || !invoiceSel) return;
 
-  const blob = new Blob([icsData], { type: "text/calendar;charset=utf-8" });
+  const prevContract = contractSel.value;
+  const prevInvoice = invoiceSel.value;
+
+  contractSel.innerHTML = `
+    <option value="msa">CloudScale_MSA_2026.pdf ($95/hr cap)</option>
+    <option value="current">Active Studio Document (${DB[state.currentDoc]?.title || state.currentDoc})</option>
+  `;
+
+  invoiceSel.innerHTML = `
+    <option value="invoice">Invoice_INV-892.pdf ($125/hr billed)</option>
+  `;
+
+  Object.keys(DB).forEach(key => {
+    if (key !== "msa" && key !== "invoice" && key !== "lease" && key !== "reconciliation") {
+      const doc = DB[key];
+      if (doc && doc.title) {
+        const opt1 = document.createElement("option");
+        opt1.value = key;
+        opt1.textContent = `${doc.title} (${doc.docType || 'Document'})`;
+        contractSel.appendChild(opt1);
+
+        const opt2 = document.createElement("option");
+        opt2.value = key;
+        opt2.textContent = `${doc.title} (${doc.docType || 'Document'})`;
+        invoiceSel.appendChild(opt2);
+      }
+    }
+  });
+
+  if (prevContract) contractSel.value = prevContract;
+  if (prevInvoice) invoiceSel.value = prevInvoice;
+}
+
+function openUploadModal() {
+  updateReconDropdowns();
+  const modal = document.getElementById("uploadModal");
+  if (modal) modal.classList.add("open");
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.classList.remove("open");
+}
+
+// Autonomous Notice Calendar Sync (.ics)
+function addToCalendar(findingId) {
+  const doc = DB[state.currentDoc];
+  const finding = (doc.findings && doc.findings.find(f => f.id === findingId)) || (doc.findings && doc.findings[0]) || {};
+  const icsContent = ForensicEngine.generateIcs(finding, doc);
+
+  const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.setAttribute("download", "Notice_Deadline_Aug16.ics");
+  link.setAttribute("download", `${(doc.title || 'Document').replace(/\.pdf$/i,'')}_Notice_Reminder.ics`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   showAppleToast("Calendar reminder (.ics) downloaded", "📅");
 }
 
-// Custom Text Audit
-function processCustomSnippet() {
-  const snippet = document.getElementById("pasteSnippetInput").value.trim();
-  if (!snippet) {
-    alert("Please paste text or snippet to analyze.");
-    return;
-  }
-
-  closeModal("uploadModal");
-
-  DB.custom = {
-    title: "Custom_Document_Snippet.txt",
-    pageInfo: "Page 1 of 1",
-    score: 62,
-    riskLevel: "Custom Review",
-    exposure: "Under Evaluation",
-    deadline: "Within 30 Days",
-    missingCount: "1 Flag",
-    docHtml: `
-      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--metallic-silver); margin-bottom: 24px; border-bottom: 1px solid var(--steel-gray); padding-bottom: 8px;">
-        <span>CUSTOM EXTRACTED DOCUMENT // AD HOC AUDIT</span>
-      </div>
-      <h2>PARSED PROVISION</h2>
-      <div class="bounding-box box-warning" id="bbox-custom1" onclick="selectFinding('custom1')">
-        <span class="box-tag badge-warning">Extracted Clause</span>
-        <p style="color: #0f172a; font-size: 13.5px; line-height: 1.65;">${snippet}</p>
-      </div>
-    `,
-    findings: [
-      {
-        id: "custom1",
-        category: "financial",
-        severity: "warning",
-        badge: "Custom Audit",
-        section: "Custom Segment",
-        page: "Page 1",
-        title: "Parsed Custom Clause",
-        plainDesc: "Clause text uploaded and indexed for review.",
-        legalDesc: "Terms formatted and checked against commercial standard clauses.",
-        impact: "Manual Review Recommended",
-        actionText: "Status: Validated",
-        counterClause: "Mutual amendment language recommended upon further legal triage.",
-        emailDraft: "Hi Team,\n\nWe have reviewed the custom provision and request standardizing terms.\n\nBest regards."
-      }
-    ]
-  };
-
-  const sel = document.getElementById("docSelector");
-  if (sel) {
-    const opt = document.createElement("option");
-    opt.value = "custom";
-    opt.textContent = "Custom_Document_Snippet.txt";
-    sel.appendChild(opt);
-    sel.value = "custom";
-  }
-
-  switchDocument("custom");
-  showView("workspace");
-  showAppleToast("Prototype Preview: Custom clause simulated extraction", "ℹ");
-}
-
 // Export Summary Dossier
 function exportSummary() {
   const doc = DB[state.currentDoc];
-  const summary = [
-    `# SENTINEL AUDIT - Document Risk Dossier`,
-    `Document: ${doc.title}`,
-    `Health Score: ${doc.score}/100 (${doc.riskLevel})`,
-    `Financial Exposure: ${doc.exposure}`,
-    `Action Window: ${doc.deadline}`,
-    `\n## Key Findings:`,
-    ...doc.findings.map(f => `- [${f.badge}] ${f.title} (${f.section}, ${f.page})\n  Summary: ${f.plainDesc}\n  Remediation: ${f.counterClause}\n`)
-  ].join("\n");
+  const markdown = ForensicEngine.generateMarkdownDossier(doc);
 
-  const blob = new Blob([summary], { type: "text/markdown;charset=utf-8" });
+  const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.setAttribute("download", `${doc.title.replace('.pdf','')}_Audit_Report.md`);
+  link.setAttribute("download", `${(doc.title || 'Document').replace(/\.pdf$/i,'')}_Forensic_Dossier.md`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  showAppleToast("Exported document audit report (.md)", "✓");
+  showAppleToast("Exported forensic audit report (.md)", "✓");
 }
 
 // Re-Audit Action
 function triggerRunAnalysis(event) {
-  const btn = (event && event.currentTarget) ? event.currentTarget : document.querySelector(".btn-primary");
+  const btn = (event && event.currentTarget) ? event.currentTarget : document.getElementById("btnReAudit");
   if (!btn) return;
+
   const originalHtml = btn.innerHTML;
   btn.innerHTML = `<span style="display: inline-block; animation: spin 0.8s linear infinite;">↻</span> Auditing...`;
   btn.style.opacity = "0.75";
@@ -1014,9 +1364,65 @@ function triggerRunAnalysis(event) {
   setTimeout(() => {
     btn.innerHTML = originalHtml;
     btn.style.opacity = "1";
-    selectFinding(state.activeFindingId);
-    showAppleToast("Document audit re-verified", "✓");
-  }, 600);
+
+    const doc = DB[state.currentDoc];
+    if (doc && doc.rawText) {
+      const refreshed = ForensicEngine.analyzeDocument(doc.rawText, doc.title);
+      DB[state.currentDoc] = refreshed;
+      refreshed.baseScore = refreshed.score;
+      refreshed.baseExposure = refreshed.exposure;
+      refreshed.baseRiskLevel = refreshed.riskLevel;
+      renderDocument();
+      renderFindings();
+    }
+    showAppleToast("Document re-audited and metrics verified", "✓");
+  }, 500);
+}
+
+// Ask VeriClause AI Assistant Copilot
+function executeCopilotQuery() {
+  const input = document.getElementById("copilotInput");
+  const resultArea = document.getElementById("copilotResultArea");
+  if (!input || !resultArea) return;
+
+  const query = input.value.trim();
+  if (!query) return;
+
+  const doc = DB[state.currentDoc];
+  const res = ForensicEngine.answerQuery(query, doc);
+
+  resultArea.style.display = "block";
+  resultArea.innerHTML = `
+    <div class="copilot-result-card">
+      <div class="copilot-result-header">
+        <span>VERICLAUSE COPILOT // ${res.citation || 'FORENSIC SCAN'}</span>
+        <button class="btn-xs btn-subtle" style="padding: 1px 6px;" onclick="document.getElementById('copilotResultArea').style.display='none'">✕</button>
+      </div>
+      <p style="margin: 0 0 8px 0; color: #f8fafc; font-size: 11.5px; line-height: 1.55;">
+        ${res.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+      </p>
+      <div style="display: flex; gap: 6px; align-items: center; margin-top: 6px;">
+        ${res.jumpId ? `
+          <button class="btn btn-subtle btn-xs" onclick="selectFinding('${res.jumpId}')">
+            Jump to Clause &rarr;
+          </button>
+        ` : ''}
+        ${res.remediation ? `
+          <button class="btn btn-primary btn-xs" onclick="openCounterModal('${res.jumpId}')">
+            Inspect Counter-Clause
+          </button>
+        ` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function quickQuery(text) {
+  const input = document.getElementById("copilotInput");
+  if (input) {
+    input.value = text;
+    executeCopilotQuery();
+  }
 }
 
 // Dynamic HUD Toast
@@ -1031,5 +1437,5 @@ function showAppleToast(message, icon = "✓") {
   clearTimeout(window._toastTimeout);
   window._toastTimeout = setTimeout(() => {
     toast.classList.remove("visible");
-  }, 2600);
+  }, 2800);
 }

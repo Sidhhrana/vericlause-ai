@@ -1844,3 +1844,302 @@ mark[style*="255, 69, 58"], mark.mark-danger {
     scrollbar-width: none;
   }
 }
+
+/* ==========================================================================
+   ADVANCED FORENSIC SUITE ADDITIONS (VeriClause v2.4)
+   ========================================================================== */
+
+/* Ingest Modal Tabs */
+.modal-nav-tabs {
+  display: flex;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--steel-gray);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+
+.modal-nav-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.modal-nav-tab.active {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+}
+
+.modal-tab-pane {
+  display: none;
+}
+
+.modal-tab-pane.active {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scanning Progress Overlay */
+.scan-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 14, 18, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.scan-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scan-card {
+  width: 90%;
+  max-width: 440px;
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.scan-spinner {
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+
+.scan-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.scan-subtitle {
+  font-size: 12px;
+  color: var(--metallic-silver);
+  margin-bottom: 20px;
+}
+
+.scan-bar-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.scan-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
+  transition: width 0.3s ease;
+}
+
+.scan-status-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #a8aeb5;
+}
+
+/* In-Place Remediation & Redline States */
+.bounding-box.box-resolved {
+  background: #f0fdf4 !important;
+  border: 1.5px solid #22c55e !important;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.12) !important;
+}
+
+.box-tag.badge-resolved {
+  background: #dcfce7 !important;
+  color: #15803d !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
+.redline-del {
+  text-decoration: line-through;
+  color: #94a3b8;
+  background: rgba(239, 68, 68, 0.08);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.redline-ins {
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.12);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* Ask VeriClause AI Assistant Command Bar */
+.copilot-section {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--steel-gray);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.copilot-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--steel-gray);
+  border-radius: 999px;
+  padding: 4px 6px 4px 14px;
+  transition: all 0.2s ease;
+}
+
+.copilot-input-row:focus-within {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
+
+.copilot-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.copilot-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.copilot-btn {
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 999px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.copilot-btn:hover {
+  transform: scale(1.05);
+}
+
+.copilot-prompt-pills {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-top: 8px;
+  scrollbar-width: none;
+}
+
+.copilot-prompt-pill {
+  background: transparent;
+  border: 1px solid var(--steel-gray);
+  color: var(--text-secondary);
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.copilot-prompt-pill:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.copilot-result-card {
+  margin: 10px 0 0;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #f1f5f9;
+  animation: fadeIn 0.2s ease;
+}
+
+.copilot-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 10.5px;
+  color: var(--metallic-silver);
+}
+
+/* Preset Snippet Chips in Modal */
+.preset-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.preset-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--steel-gray);
+  color: var(--text-secondary);
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.preset-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+/* Print Styles for Dossier Export */
+@media print {
+  .app-header, .audit-control-bar, .card-actions, .hero-container, .features-page-header {
+    display: none !important;
+  }
+  .app-workspace {
+    display: block !important;
+  }
+  .document-pane {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+

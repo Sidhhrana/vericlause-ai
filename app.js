@@ -171,6 +171,19 @@ SECTION 13: GOVERNING LAW & JURISDICTION
       <p style="margin-bottom: 12px; font-size: 13px; color: #334155; line-height: 1.7;">
         14.1 Entire Agreement: This Agreement, together with all executed SOWs and Exhibits, constitutes the entire understanding between the parties and supersedes all prior verbal or written negotiations, proposals, or representations.
       </p>
+
+      <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+        <div>
+          <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 24px;">For Vendor: CloudScale Technologies LLC</div>
+          <div style="border-bottom: 1px solid #cbd5e1; height: 1px; margin-bottom: 6px;"></div>
+          <div style="font-size: 11px; color: #64748b;">Authorized Signatory &bull; Date</div>
+        </div>
+        <div>
+          <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 24px;">For Client: Apex Global Enterprise Corp.</div>
+          <div style="border-bottom: 1px solid #cbd5e1; height: 1px; margin-bottom: 6px;"></div>
+          <div style="font-size: 11px; color: #64748b;">Authorized Signatory &bull; Date</div>
+        </div>
+      </div>
     `,
     findings: [
       {
